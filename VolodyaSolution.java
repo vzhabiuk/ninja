@@ -34,7 +34,7 @@ private static String findMaxSequenceMain(List<String> words) {
       if (!visitedWords.contains(word)) {
         visitedWords.add(word);
         Char lastWordChar = word.charAt(word.length() - 1);
-        String tail = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, word.charAt(word.length() - 1));
+        String tail = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, lastWordChar);
         if (currenMax.length() < tail.length() + word.length()) {
            currentMax = word + tail;
         }
