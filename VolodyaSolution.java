@@ -15,17 +15,32 @@ private static String findMaxSequenceMain(List<String> words) {
     wordsByStartLetter.computeIfAbsent(firstChar, key -> new ArrayList<>()).add(word);
   }
   Set<String> visitedWords = new HashSet<>();
-  StringBuilder currentSequence = new StringBuilder();
   String currentMax = "";
-  for (String word : words) {
-    visitedWords.add(word);
+  for (Char firstLetter : wordsByStartLetter.keySet()) {
     currentSequence.append(word);
-    String newMax = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, currentSequence);
+    String newMax = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, firstLetter);
     if (newMax.length() > currentMax.length()) {
        newMax = currentMax;
     }
   }
-}  
+  return currentMax;
+} 
 
-
+  private static String findMaxSequenceRecursive(Map<Char, List<String>> wordsByStartLetter, 
+                                               Set<String> visitedWords, 
+                                               Char firstLetter) {
+    String currentMax = "";
+    for (String word : wordsByStartLetter.get(firstLetter)) {
+      if (!visitedWords.contains(word)) {
+        visitedWords.add(word);
+        Char lastWordChar = word.charAt(word.length() - 1);
+        String tail = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, word.charAt(word.length() - 1));
+        if (currenMax.length() < tail.length() + word.length()) {
+           currentMax = word + tail;
+        }
+        visitedWords.remove(word);
+      }
+    }
+    return currenMax;
+  }
 }
