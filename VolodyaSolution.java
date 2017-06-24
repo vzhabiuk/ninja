@@ -43,4 +43,8 @@ private static String findMaxSequenceMain(List<String> words) {
     }
     return currenMax;
   }
+  
+  public static void main(String[] args) {
+    System.out.println("Max sequence = " + findMaxSequenceMain(readWords(System.in)));
+  }
 }
