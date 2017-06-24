@@ -25,7 +25,7 @@ private static String findMaxSequenceMain(List<String> words) {
   }
   return currentMax;
 } 
-
+  //Poshyk v glubuny na grafi
   private static String findMaxSequenceRecursive(Map<Char, List<String>> wordsByStartLetter, 
                                                Set<String> visitedWords, 
                                                Char firstLetter) {
