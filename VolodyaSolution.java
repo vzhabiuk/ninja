@@ -20,7 +20,7 @@ private static String findMaxSequenceMain(List<String> words) {
     currentSequence.append(word);
     String newMax = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, firstLetter);
     if (newMax.length() > currentMax.length()) {
-       newMax = currentMax;
+       currentMax = newMax;
     }
   }
   return currentMax;
