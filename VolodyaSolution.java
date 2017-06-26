@@ -20,7 +20,7 @@ public class VolodyaSolution {
         }
     }
 
-    private static String findMaxSequenceMain(List<String> words) {
+    private static List<String> findMaxSequenceMain(List<String> words) {
         Map<Character, List<String>> wordsByStartLetter = new HashMap<>();
         //instead of this for loop we could do words.stream().collect(Collectors.groupingBy(word -> word.charAt(0)));
         for (String word : words) {
@@ -28,10 +28,10 @@ public class VolodyaSolution {
             wordsByStartLetter.computeIfAbsent(firstChar, key -> new ArrayList<>()).add(word);
         }
         Set<String> visitedWords = new HashSet<>();
-        String currentMax = "";
+        List<String> currentMax = Collections.emptyList();
         for (Character firstLetter : wordsByStartLetter.keySet()) {
-            String newMax = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, firstLetter);
-            if (newMax.length() > currentMax.length()) {
+            List<String> newMax = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, firstLetter);
+            if (newMax.size() > currentMax.size()) {
                 currentMax = newMax;
             }
         }
@@ -39,17 +39,19 @@ public class VolodyaSolution {
     }
 
     //Poshyk v glubuny na grafi
-    private static String findMaxSequenceRecursive(Map<Character, List<String>> wordsByStartLetter,
+    private static List<String> findMaxSequenceRecursive(Map<Character, List<String>> wordsByStartLetter,
                                                    Set<String> visitedWords,
                                                    Character firstLetter) {
-        String currentMax = "";
+        List<String> currentMax = Collections.emptyList();
         for (String word : wordsByStartLetter.getOrDefault(firstLetter, Collections.emptyList())) {
             if (!visitedWords.contains(word)) {
                 visitedWords.add(word);
                 Character lastWordChar = word.charAt(word.length() - 1);
-                String tail = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, lastWordChar);
-                if (currentMax.length() < tail.length() + word.length()) {
-                    currentMax = word + tail;
+                List<String> tail = findMaxSequenceRecursive(wordsByStartLetter, visitedWords, lastWordChar);
+                if (currentMax.size() <= tail.size()) {
+                    currentMax = new ArrayList<>();
+                    currentMax.add(word);
+                    currentMax.addAll(tail);
                 }
                 visitedWords.remove(word);
             }
@@ -59,7 +61,7 @@ public class VolodyaSolution {
 
     public static void main(String[] args) {
         //System.out.println("Max sequence = " + findMaxSequenceMain(readWords(System.in)));
-        List<String> words = Arrays.asList("ab", "bc", "bb", "bc", "cd", "ddd", "de", "abcde");
+        List<String> words = Arrays.asList("ab", "bc", "bb", "bc", "cd", "ddd", "de", "azzzzzzzzzzzzzzzze");
         Collections.reverse(words);
         System.out.println("Max sequence = " + findMaxSequenceMain(words));
     }
