@@ -9,9 +9,12 @@ import java.util.stream.Collectors;
 public class VolodyaSolution {
 
     private static List<String> readWords(InputStream inputStream) {
-
         try (InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-            return new BufferedReader(reader).lines().filter(line -> !line.isEmpty()).collect(Collectors.toList());
+            return new BufferedReader(reader)
+                    .lines()
+                    .flatMap(line -> Arrays.stream(line.split("\\s+")))
+                    .filter(word -> !word.isEmpty())
+                    .collect(Collectors.toList());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -34,12 +37,13 @@ public class VolodyaSolution {
         }
         return currentMax;
     }
+
     //Poshyk v glubuny na grafi
     private static String findMaxSequenceRecursive(Map<Character, List<String>> wordsByStartLetter,
                                                    Set<String> visitedWords,
                                                    Character firstLetter) {
         String currentMax = "";
-        for (String word : wordsByStartLetter.get(firstLetter)) {
+        for (String word : wordsByStartLetter.getOrDefault(firstLetter, Collections.emptyList())) {
             if (!visitedWords.contains(word)) {
                 visitedWords.add(word);
                 Character lastWordChar = word.charAt(word.length() - 1);
@@ -54,6 +58,9 @@ public class VolodyaSolution {
     }
 
     public static void main(String[] args) {
-        System.out.println("Max sequence = " + findMaxSequenceMain(readWords(System.in)));
+        //System.out.println("Max sequence = " + findMaxSequenceMain(readWords(System.in)));
+        List<String> words = Arrays.asList("ab", "bc", "bb", "bc", "cd", "ddd", "de", "abcde");
+        Collections.reverse(words);
+        System.out.println("Max sequence = " + findMaxSequenceMain(words));
     }
 }
